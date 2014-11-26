@@ -7,22 +7,10 @@
     A brief description goes here.
 """
 import ctypes
-from ctypes import c_char_p
-from ctypes import c_void_p
+from ctypes import c_void_p, c_int, c_int, c_char_p
+from ctypes import POINTER
 
 import numpy
-
-
-def get(key):
-    pass
-
-
-def set(key, value):
-    pass
-
-
-def delete(key):
-    pass
 
 
 def foo():
@@ -39,8 +27,17 @@ def foo():
     #new_array = numpy.fromstring(res, dtype=int)
 
 
+def divide():
+    lib = ctypes.cdll.LoadLibrary("./cpp.so")
+    lib.divide.restype = POINTER(c_int * 4) # so the result pointer will only iterate 4 times
+    lib.divide.argtypes = [c_int, c_int]
+    res = lib.divide(10, 3)
+    for i in res.contents:
+        print i
+
+
 def main(argv):
-    foo()
+    divide()
 
 
 if __name__ == '__main__':
