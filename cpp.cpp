@@ -5,7 +5,7 @@
 
 
 extern "C" std::vector<int>* divide_p(int total, int part);
-extern "C" int* divide(int total, int part);
+extern "C" int* get_global_array(int total, int part);
 
 std::vector<int>* divide_p(int total, int part)
 {
@@ -20,11 +20,11 @@ std::vector<int>* divide_p(int total, int part)
     return v;
 }
 
+int global_v[4] = {1, 2, 3, 4};
 
-int* divide(int total, int part)
+int* get_global_array(int total, int part)
 {
-    int *v = new int[4] {1, 2, 3, 4};
-
+    int *v = global_v;
     return v;
 }
 

@@ -27,17 +27,21 @@ def foo():
     #new_array = numpy.fromstring(res, dtype=int)
 
 
-def divide():
-    """
+def modify_int_array():
+    """Deliver C pointer to Python
     vector is not an efficient way to build a list and return to python:
         http://stackoverflow.com/questions/16885344/how-to-handle-c-return-type-stdvectorint-in-python-ctypes
     """
     lib = ctypes.cdll.LoadLibrary("./cpp.so")
-    lib.divide.restype = POINTER(c_int * 4) # so the result pointer will only iterate 4 times
-    lib.divide.argtypes = [c_int, c_int]
-    res = lib.divide(10, 3)
-    for i in res.contents:
-        print i
+    lib.get_global_array.restype = POINTER(c_int * 4) # so the result pointer will only iterate 4 times
+    lib.get_global_array.argtypes = [c_int, c_int]
+    ptr = lib.get_global_array(10, 3)
+    print [i for i in ptr.contents]
+    # change the global array's value
+    ptr.contents[2] = 100
+
+    ptr1 = lib.get_global_array(10, 3)
+    print [i for i in ptr1.contents]
 
 
 def get_numpy_array_pointer():
@@ -59,7 +63,7 @@ def get_numpy_array_pointer():
 
 
 def main(argv):
-    get_numpy_array_pointer()
+    modify_int_array()
 
 
 if __name__ == '__main__':
