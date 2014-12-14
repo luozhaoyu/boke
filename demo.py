@@ -44,6 +44,18 @@ def modify_int_array():
     print [i for i in ptr1.contents]
 
 
+def modify_numpy_array():
+    """Deliver C pointer to Python
+
+    TODO: anaconda's numpy C source version pops warning since it is not 1.9
+    """
+    get_global_numpy_array = ctypes.cdll.LoadLibrary("./ctype.so").get_global_numpy_array
+    #get_global_numpy_array.restype = [] # so the result pointer will only iterate 4 times
+    #get_global_numpy_array.argtypes = [c_int, c_int]
+    ptr = get_global_numpy_array()
+    return ptr
+
+
 def get_numpy_array_pointer():
     x = numpy.array([3.14, 2.78, 1.4142356])
     # One should always specify the length of array
@@ -63,7 +75,7 @@ def get_numpy_array_pointer():
 
 
 def main(argv):
-    modify_int_array()
+    modify_numpy_array()
 
 
 if __name__ == '__main__':
